@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h1>My Orders</h1>
+<p>All Your orders are here 👇👇👇👇👇</p>
+{% if orders %}
+<h1 class="mt-4">My Orders</h1>
+<table class="table table-striped table-responsive">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Order</th>
+            <th scope="col">Placed at</th>
+            <th scope="col">Items</th>
+            <th scope="col">Confirmed</th>
+            <th scope="col">Delivery Status</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for order in orders %}
+        <tr>
+            <td scope="row">{{order.id}}</td>
+            <td><a href="{% url 'order_detail' item_id=order.id%}">{{first_item.item.name}} at {{first_item.item.price}}
+                    ... </a></td>
+            <td>{{ order.created_at }}</td>
+            <td>{{order.items.count}}</td>
+            <td>{{order.confirmed}}</td>
+            <td>{{order.delivered}}</td>
+            <td><a href="{% url 'delete_order' order_id=order.id%}" class="text-danger">Delete</a></td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+{% else %}
+  <div class="mt-4">
+    
+    <div class="text-center">
+        <p>No orders yet.
+        <form action="{% url 'create_new_order' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Place Your Order</button>
+        </form>
+        </p>
+    </div>
+</div>
+{% endif %}
+
+</div>
+{% endblock content %}
